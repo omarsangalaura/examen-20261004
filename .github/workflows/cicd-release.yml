@@ -24,8 +24,7 @@ jobs:
             - name: Preparando comprimido de API para asset
               run: |
                 cd publish
-                ls -l
-                zip -r ../api-release-${{ github.ref_name }}.zip
+                zip -r ../api-release-${{ github.ref_name }}.zip .
                 cd ..
             - name: Publicando release en GitHub
               uses: softprops/action-gh-release@v3.0.0
