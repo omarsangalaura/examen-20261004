@@ -1,0 +1,28 @@
+name: CI/CD - Pipeline build & test
+on:
+    push:
+        branches: ['main']
+    pull_request:
+        branches: ['main']
+
+jobs:
+    build-test:
+        runs-on: ${{ matrix.os }}
+        # Definición de la matriz
+        strategy:
+            matrix:
+                os: [ubuntu-latest, macos-latest]
+        steps:
+            - name: Clonando repositorio
+              uses: actions/checkout@v6.0.1
+            - name: Configurando .Net 10
+              uses: actions/setup-dotnet@v4
+              with:
+                dotnet-version: '10.0.x'
+            - name: Preparando dependencias
+              run: dotnet restore
+            - name: Compilando la solución
+              run: dotnet build --configuration Release --no-restore
+            - name: Ejecutando las pruebas
+              run: dotnet test --configuration Release --no-build --verbosity normal
+            
