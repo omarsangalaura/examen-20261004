@@ -37,7 +37,7 @@ jobs:
                     - El asset api-release-${{ github.ref_name }}.zip solo contiene los archivos para la publicación de la API
                     - El código fuente incluido contiene la solución con el proyecto de la API y las pruebas
                     - Las pruebas se realizan con el marco de trabajo MSTest
-                draf: false
+                draft: false
                 prerelease: false
                 generate_release_notes: true
                 files: api-release-${{ github.ref_name }}.zip
