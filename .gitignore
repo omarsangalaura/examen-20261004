@@ -34,3 +34,10 @@
 *.coverage
 *.coveragexml
 TestResults/
+
+## --- Carpetas y archivos de publicación (dotnet publish) ---
+[Pp]ublish/
+**/publish/
+[Pp]ublishOutput/
+**/PublishOutput/
+*.deploymanifest

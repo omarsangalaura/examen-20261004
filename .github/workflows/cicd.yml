@@ -14,7 +14,7 @@ jobs:
                 os: [ubuntu-latest, macos-latest]
         steps:
             - name: Clonando repositorio
-              uses: actions/checkout@v6.0.1
+              uses: actions/checkout@v6.1.0
             - name: Configurando .Net 10
               uses: actions/setup-dotnet@v4
               with:

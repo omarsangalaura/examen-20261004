@@ -1,0 +1,46 @@
+name: CI/CD - Pipeline release
+on:
+    push:
+        branches: ['main']
+        tags:
+            - 'v*'
+jobs:
+    release:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+        steps:
+            - name: Clonando proyecto
+              uses: actions/checkout@v6.1.0
+              with:
+                fetch-depth: 0
+            - name: Configurando .Net 10
+              uses: actions/setup-dotnet@v4
+              with:
+                dotnet-version: '10.0.x'
+            - name: Compilando la solución
+              run: dotnet build --configuration Release
+            - name: Publicando API
+              run: dotnet publish apiSimple/apiSimple.csproj --configuration Release --output ./publish
+            - name: Preparando comprimido de API para asset
+              run: |
+                cd publish
+                zip -r ../api-release-${{ github.ref_name }}.zip
+                cd ..
+            - name: Publicando release en GitHub
+              uses: softprops/action-gh-release@v3.0.0
+              with:
+                name: "Release ${{ github.ref_name }}"
+                body: |
+                    ## Detalles de esta versión
+                    - API simple basada en controladores
+                    - Único endpoint probado en éxito y fallo
+                    - El asset api-release-${{ github.ref_name }}.zip solo contiene los archivos para la publicación de la API
+                    - El código fuente incluido contiene la solución con el proyecto de la API y las pruebas
+                    - Las pruebas se realizan con el marco de trabajo MSTest
+                draf: false
+                prerelease: false
+                generate_release_notes: true
+                files: api-release-${{ github.ref_name }}.zip
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
